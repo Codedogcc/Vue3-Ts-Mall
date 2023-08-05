@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue';
+import { defineComponent, reactive, toRefs, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { LoginData } from '../type/login';
 
@@ -84,9 +84,13 @@ export default defineComponent({
         }
       ]
     };
+    const ruleFormRef = ref<FormInstance>();
+
+    //登录
     const submitForm = (formEl: FormInstance | undefined) => {
-      if (!formEl) return;
+      debugger;
       console.log(formEl, 'sss');
+      if (!formEl) return;
 
       formEl.validate((valid) => {
         if (valid) {
@@ -97,16 +101,13 @@ export default defineComponent({
         }
       });
     };
-
+    // 重置
     const resetForm = (formEl: FormInstance | undefined) => {
       if (!formEl) return;
       formEl.resetFields();
     };
-    const aaa = () => {
-      console.log(6666);
-    };
 
-    return { ...toRefs(data), rules, resetForm, submitForm };
+    return { ...toRefs(data), rules, resetForm, submitForm, ruleFormRef };
   }
 });
 </script>
