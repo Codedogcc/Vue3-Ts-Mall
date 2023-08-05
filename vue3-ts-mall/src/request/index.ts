@@ -26,7 +26,12 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
 
-  config => {
+  (config) => {
+    config.headers = config.headers || {};
+    // 如果有token的话
+    if (localStorage.getItem('token')) {
+      config.headers.token = localStorage.getitem('token') || ""
+    }
     //进度条开始
     // NProgress.start();
     return config;
@@ -34,4 +39,26 @@ service.interceptors.request.use(
   error => {
     return Promise.reject(error);
   }
-); 
+);
+
+
+// 响应拦截
+service.interceptors.response.use(
+  (response) => {
+    const code: number = response.data.code;
+    if (code === 200) {
+      return response.data;
+    } else {
+      return Promise.reject(response.data);
+    }
+
+    // 进度条结束
+    // NProgress.done();
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 暴露封装的axios 
+export default service;
