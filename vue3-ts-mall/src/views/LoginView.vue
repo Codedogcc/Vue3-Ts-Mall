@@ -46,6 +46,7 @@
 import { defineComponent, reactive, toRefs, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { LoginData } from '../type/login';
+import { login } from '../request/api';
 
 interface LoginForm {
   ruleFormRef: FormInstance;
@@ -88,15 +89,33 @@ export default defineComponent({
 
     //登录
     const submitForm = (formEl: FormInstance | undefined) => {
-      debugger;
-      console.log(formEl, 'sss');
+      console.log(formEl, 'formEl');
       if (!formEl) return;
-
+      // 对表单的内容进行验证
       formEl.validate((valid) => {
+        console.log(valid, 'valid是布尔类型true/false');
+
         if (valid) {
-          console.log('submit!');
+          console.log(this, 'this是undifined');
+          // 调用登录接口
+          // let res = login(data.ruleForm);
+          // console.log(res, 'res');
+          // if (res.code === 200) {
+          //   console.log('登录成功');
+          //   // 1. 保存用户信息到sessionStorage
+          //   // 2. 保存token到sessionStorage
+          // }
+          if (
+            data.ruleForm.username === 'chen' &&
+            data.ruleForm.password === '123456'
+          ) {
+            alert('login success!');
+            // #todo
+          } else {
+            alert('cant find this user!');
+          }
         } else {
-          console.log('error submit!');
+          alert('login error!');
           return false;
         }
       });
