@@ -47,6 +47,7 @@ import { defineComponent, reactive, toRefs, ref } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { LoginData } from '../type/login';
 import { login } from '../request/api';
+import { useRouter } from 'vue-router';
 
 interface LoginForm {
   ruleFormRef: FormInstance;
@@ -86,12 +87,12 @@ export default defineComponent({
       ]
     };
     const ruleFormRef = ref<FormInstance>();
-
+    const router = useRouter(); // 相当于$router
     //登录
     const submitForm = (formEl: FormInstance | undefined) => {
       console.log(formEl, 'formEl');
       if (!formEl) return;
-      // 对表单的内容进行验证
+      // 对表单的内容进行验证,validate是内置方法，检验整个表单是否符合规则
       formEl.validate((valid) => {
         console.log(valid, 'valid是布尔类型true/false');
 
@@ -106,11 +107,15 @@ export default defineComponent({
           //   // 2. 保存token到sessionStorage
           // }
           if (
-            data.ruleForm.username === 'chen' &&
-            data.ruleForm.password === '123456'
+            data.ruleForm.username.trim() === 'chen' &&
+            data.ruleForm.password.trim() === '123456'
           ) {
             alert('login success!');
             // #todo
+            router.push('/home');
+            // 1. 保存用户信息到sessionStorage
+            // 2. 保存token到sessionStorage
+            // 3. 跳转到首页
           } else {
             alert('cant find this user!');
           }
